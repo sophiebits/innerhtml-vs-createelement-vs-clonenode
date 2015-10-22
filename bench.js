@@ -61,6 +61,62 @@ function testCreate() {
   return node22;
 }
 
+function testCreate2() {
+  var node22 = document.createElement("li");
+  node22.setAttribute("data-reactid", 22);
+  node22.setAttribute("class", "clearfix sideNavItem stat_elem");
+  node22["id"] = "navItem_217974574879787";
+  var node23 = document.createElement("div");
+  node22.appendChild(node23);
+  node23.setAttribute("data-reactid", 23);
+  node23.setAttribute("class", "buttonWrap");
+  node23.setAttribute("data-testid", "bookmark_edit_button");
+  var node24 = document.createElement("div");
+  node23.appendChild(node24);
+  node24.setAttribute("data-reactid", 24);
+  node24.setAttribute("class", "uiSideNavEditButton");
+  var node25 = document.createElement("a");
+  node24.appendChild(node25);
+  node25.setAttribute("data-reactid", 25);
+  node25["href"] = "#";
+  node25["title"] = "Edit Messages link";
+  node25.setAttribute("aria-label", "Edit Messages link");
+  node25.setAttribute("class", "_1wc5 _26tg accessible_elem");
+  var node26 = document.createElement("a");
+  node22.appendChild(node26);
+  node26.setAttribute("data-reactid", 26);
+  node26.setAttribute("data-testid", "left_nav_item_Messages");
+  node26.setAttribute("class", "_5afe sortableItem");
+  node26.setAttribute("data-gt", "{\"bmid\":\"217974574879787\",\"count\":\"0\",\"bookmark_type\":\"type_facebook_app\",\"rank\":\"3\",\"nav_items_count\":\"4\",\"nav_section\":\"favorites\",\"sec_position\":\"1\",\"screen_height\":\"\",\"screen_width\":\"\",\"total\":\"22\",\"masher\":\"item\"}");
+  node26["title"] = "Messages";
+  node26["href"] = "/messages/";
+  node26["draggable"] = "false";
+  var node27 = document.createElement("span");
+  node26.appendChild(node27);
+  node27.setAttribute("data-reactid", 27);
+  node27.setAttribute("class", "imgWrap");
+  node27.setAttribute("data-testid", "bookmark_icon_left_nav");
+  var node28 = document.createElement("i");
+  node27.appendChild(node28);
+  node28.setAttribute("data-reactid", 28);
+  node28.setAttribute("height", "16");
+  node28.setAttribute("width", "16");
+  node28["draggable"] = "false";
+  node28["alt"] = "";
+  node28.setAttribute("class", "img sp_YH4CuyEceFD sx_1045ce");
+  var node29 = document.createElement("div");
+  node26.appendChild(node29);
+  node29.setAttribute("data-reactid", 29);
+  node29.setAttribute("class", "linkWrap noCount");
+  var node30 = document.createElement("span");
+  node29.appendChild(node30);
+  node30.setAttribute("data-reactid", 30);
+  node30.setAttribute("class", "");
+  node30["textContent"] = "Messages";
+  return node22;
+}
+
+
 var templateNode = testCreate();
 function testClone() {
   var node31 = templateNode.cloneNode(true);
@@ -119,6 +175,7 @@ function testClone() {
 
 window.testHTML = testHTML;
 window.testCreate = testCreate;
+window.testCreate2 = testCreate2;
 window.testClone = testClone;
 
 })();
