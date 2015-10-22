@@ -32,9 +32,9 @@ See bench.js for the exact code I'm testing.
 
 To run the tests, start up an HTTP server in this directory, then visit:
 
-http://127.0.0.1:8080/runner.html?testFn=testHTML
-http://127.0.0.1:8080/runner.html?testFn=testCreate
-http://127.0.0.1:8080/runner.html?testFn=testClone
+* http://127.0.0.1:8080/runner.html?testFn=testHTML
+* http://127.0.0.1:8080/runner.html?testFn=testCreate
+* http://127.0.0.1:8080/runner.html?testFn=testClone
 
 It should run 40 trials (each trial creates this hierarchy 1000 times) and give you the mean time (in ms), along with a confidence interval for that mean. Each trial is run in a new iframe, so any JIT warmup time should be counted in the numbers.
 
@@ -46,39 +46,39 @@ All numbers in ms, lower numbers are better.
 
 **Chrome 46.0.2490.64 on my Mac laptop:**
 
-testHTML: 12.9, 99.7% ci: [12.5, 13.3]
-testCreate: 16.0, 99.7% ci: [15.3, 16.7]
-testClone: 12.7, 99.7% ci: [12.1, 13.5]
+* testHTML: 12.9, 99.7% ci: [12.5, 13.3]
+* testCreate: 16.0, 99.7% ci: [15.3, 16.7]
+* testClone: 12.7, 99.7% ci: [12.1, 13.5]
 
 **Firefox 41.0.2 on my Mac laptop:**
 
-testHTML: 58.9, 99.7% ci: [57.4, 60.5]
-testCreate: 44.7, 99.7% ci: [43.8, 45.6]
-testClone: 34.0, 99.7% ci: [33.3, 34.9]
+* testHTML: 58.9, 99.7% ci: [57.4, 60.5]
+* testCreate: 44.7, 99.7% ci: [43.8, 45.6]
+* testClone: 34.0, 99.7% ci: [33.3, 34.9]
 
 **Safari 9.0 on my Mac laptop:**
 
-testHTML: 29.1, 99.7% ci: [28.4, 29.9]
-testCreate: 9.3, 99.7% ci: [9.0, 9.6]
-testClone: 8.8, 99.7% ci: [8.3, 9.2]
+* testHTML: 29.1, 99.7% ci: [28.4, 29.9]
+* testCreate: 9.3, 99.7% ci: [9.0, 9.6]
+* testClone: 8.8, 99.7% ci: [8.3, 9.2]
 
 **Edge 20.10240.16384.0 in a Windows 10 VM on my Mac laptop:**
 
-testHTML: 396.4, 99.7% ci: [383.4, 413.3]
-testCreate: 640.2, 99.7% ci: [622.4, 662.6]
-testClone: 281.6, 99.7% ci: [258.9, 315.2]
+* testHTML: 396.4, 99.7% ci: [383.4, 413.3]
+* testCreate: 640.2, 99.7% ci: [622.4, 662.6]
+* testClone: 281.6, 99.7% ci: [258.9, 315.2]
 
 **IE 11.0.10240.16384 in a Windows 10 VM on my Mac laptop:**
 
-testHTML: 371.5, 99.7% ci: [352.4, 393.1]
-testCreate: 683.6, 99.7% ci: [642.5, 725.5]
-testClone: 275.4, 99.7% ci: [258.7, 302.0]
+* testHTML: 371.5, 99.7% ci: [352.4, 393.1]
+* testCreate: 683.6, 99.7% ci: [642.5, 725.5]
+* testClone: 275.4, 99.7% ci: [258.7, 302.0]
 
 **Chrome 46.0.2490.71 in a Windows 10 VM on my Mac laptop:**
 
-testHTML: 42.3, 99.7% ci: [41.2, 43.6]
-testCreate: 19.9, 99.7% ci: [18.9, 20.8]
-testClone: 15.8, 99.7% ci: [14.9, 16.8]
+* testHTML: 42.3, 99.7% ci: [41.2, 43.6]
+* testCreate: 19.9, 99.7% ci: [18.9, 20.8]
+* testClone: 15.8, 99.7% ci: [14.9, 16.8]
 
 ## Conclusion
 
