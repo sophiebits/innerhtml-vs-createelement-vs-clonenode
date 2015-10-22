@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style>
+  #info {
+    white-space: pre-wrap;
+  }
+  iframe {
+    visibility: hidden;
+    position: absolute;
+  }
+</style>
+</head>
+<body>
+<div id="info"></div>
+<div id="iframecontainer"></div>
+<script>
+var threads = 1;
+var runs = 40;
+
+var info = document.getElementById('info');
+var iframeContainer = document.getElementById('iframecontainer');
+var times = [];
+var iframes = [];
+
+var started = 0;
+var completed = 0;
+
+function startTrial() {
+  if (started === runs) {
+    return;
+  }
+  started++;
+  var ifr = document.createElement('iframe');
+  ifr.setAttribute('sandbox', 'allow-scripts');
+  ifr.src = 'bench.html' + window.location.search;
+  iframes.push(ifr);
+  iframeContainer.appendChild(ifr);
+}
+
+// When any frame returns its result, append it to the list and kick off a new
+// trial (if we're not done)
+window.addEventListener('message', function(event) {
+  var win = event.source;
+  iframes.forEach(function(ifr, i) {
+    if (ifr.contentWindow === win) {
+      iframes.splice(i, 1);
+      iframeContainer.removeChild(ifr);
+    }
+  });
+  times.push(event.data);
+  completed++;
+  info.textContent =
+    'trials completed: ' + times.length + '\n' +
+    analyze(times) + '\n' +
+    'samples: ' + times.slice().sort(function(a, b) { return a - b; }).map(function(t) { return t.toFixed(2); }).join(', ');
+  setTimeout(startTrial, 0);
+}, false);
+
+for (var i = 0; i < threads; i++) {
+  startTrial();
+}
+
+/**
+ * Return the k-th percentile of arr.
+ */
+function percentile(arr, k) {
+  var idx = k * (arr.length - 1);
+  var idxLow = Math.floor(idx);
+  var idxHigh = Math.ceil(idx);
+  if (idxLow === idxHigh) {
+    return arr[idx];
+  } else {
+    return arr[idxLow] * (idxHigh - idx) + arr[idxHigh] * (idx - idxLow);
+  }
+}
+
+/**
+ * Return a string with info about the mean of the provided list (and a
+ * confidence interval for that mean).
+ */
+function analyze(numbers) {
+  function sum(arr) {
+    return arr.reduce(function(x, y) { return x + y; }, 0);
+  }
+
+  function mean(arr) {
+    return sum(arr) / arr.length;
+  }
+
+  function resample(arr) {
+    var n = arr.length;
+    var samples = Array(n);
+    for (var i = 0; i < n; i++) {
+      samples[i] = arr[Math.floor(n * Math.random())];
+    }
+    return samples;
+  }
+
+  var means = [];
+  for (var i = 0; i < 1000; i++) {
+    means.push(mean(resample(numbers)));
+  }
+  means.sort(function(a, b) { return a - b; });
+
+  var ci = 0.997;
+  var pct = (1 - ci) / 2;
+  return (
+    'mean: ' + mean(numbers).toFixed(1) + ', ' +
+    (100 * ci) + '% ci: [' +
+    percentile(means, pct).toFixed(1) + ', ' +
+    percentile(means, 1 - pct).toFixed(1) +
+    ']'
+  );
+}
+</script>
+</body>
+</html>
