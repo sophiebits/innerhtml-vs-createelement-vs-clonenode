@@ -34,14 +34,11 @@ See bench.js for the exact code I'm testing.
 
 To run the tests, start up an HTTP server in this directory, then visit:
 
-* http://127.0.0.1:8080/runner.html?testFn=testHTML
-* http://127.0.0.1:8080/runner.html?testFn=testCreate
-* http://127.0.0.1:8080/runner.html?testFn=testCreate2
-* http://127.0.0.1:8080/runner.html?testFn=testClone
+* http://127.0.0.1:8080/runner.html
 
 It should run 40 trials (each trial creates this hierarchy 1000 times) and give you the mean time (in ms), along with a confidence interval for that mean. Each trial is run in a new iframe, so any JIT warmup time should be counted in the numbers.
 
-You can also visit `bench.html?testFn=testHTML` directly to run one trial.
+You can also visit `bench.html?testFn=testHTML` or similar to directly to run one trial.
 
 ## Results
 

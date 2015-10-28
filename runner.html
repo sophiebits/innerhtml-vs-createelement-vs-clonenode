@@ -17,11 +17,18 @@
 <div id="iframecontainer"></div>
 <script>
 var threads = 1;
-var runs = 40;
+var runs = [];
+
+for (var i = 0; i < 10; i++) {
+  runs.push('bench.html?testFn=testHTML');
+  runs.push('bench.html?testFn=testCreate');
+  runs.push('bench.html?testFn=testCreate2');
+  runs.push('bench.html?testFn=testClone');
+}
 
 var info = document.getElementById('info');
 var iframeContainer = document.getElementById('iframecontainer');
-var times = [];
+var times = {};
 var iframes = [];
 
 var started = 0;
@@ -31,32 +38,51 @@ function startTrial() {
   if (started === runs) {
     return;
   }
+  var i = started;
   started++;
   var ifr = document.createElement('iframe');
-  ifr.setAttribute('sandbox', 'allow-scripts');
-  ifr.src = 'bench.html' + window.location.search;
+  //ifr.setAttribute('sandbox', 'allow-scripts');
+  ifr.src = runs[i];
+  ifr.setAttribute('data-src', runs[i]);
   iframes.push(ifr);
   iframeContainer.appendChild(ifr);
 }
 
+function updateInfo() {
+  info.innerHTML = '';
+  for (var k in times) {
+    var ti = times[k];
+    info.appendChild(document.createTextNode(
+      k + ' (' + ti.length + '): ' + analyze(ti) + '\n'
+    ));
+  }
+}
+
 // When any frame returns its result, append it to the list and kick off a new
 // trial (if we're not done)
-window.addEventListener('message', function(event) {
+var elis = function(event) {
   var win = event.source;
-  iframes.forEach(function(ifr, i) {
+  var src;
+  for (var i = 0; i < iframes.length; i++) {
+    var ifr = iframes[i];
     if (ifr.contentWindow === win) {
+      src = ifr.getAttribute('data-src');
       iframes.splice(i, 1);
       iframeContainer.removeChild(ifr);
+      break;
     }
-  });
-  times.push(event.data);
+  };
+  if (!times[src]) times[src] = [];
+  times[src].push(+event.data);
+  updateInfo();
   completed++;
-  info.textContent =
-    'trials completed: ' + times.length + '\n' +
-    analyze(times) + '\n' +
-    'samples: ' + times.slice().sort(function(a, b) { return a - b; }).map(function(t) { return t.toFixed(2); }).join(', ');
   setTimeout(startTrial, 0);
-}, false);
+}
+if (window.addEventListener) {
+  window.addEventListener('message', elis, false);
+} else {
+  window.attachEvent('onmessage', elis);
+}
 
 for (var i = 0; i < threads; i++) {
   startTrial();
@@ -82,7 +108,11 @@ function percentile(arr, k) {
  */
 function analyze(numbers) {
   function sum(arr) {
-    return arr.reduce(function(x, y) { return x + y; }, 0);
+    var s = 0;
+    for (var i = 0; i < arr.length; i++) {
+      s += arr[i];
+    }
+    return s;
   }
 
   function mean(arr) {
@@ -107,7 +137,7 @@ function analyze(numbers) {
   var ci = 0.997;
   var pct = (1 - ci) / 2;
   return (
-    'mean: ' + mean(numbers).toFixed(1) + ', ' +
+    '' + mean(numbers).toFixed(1) + ', ' +
     (100 * ci) + '% ci: [' +
     percentile(means, pct).toFixed(1) + ', ' +
     percentile(means, 1 - pct).toFixed(1) +
